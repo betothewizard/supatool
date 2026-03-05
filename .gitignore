@@ -1,7 +1,9 @@
+node_modules/
+dist/
+.wxt/
+.output/
+*.log
 .DS_Store
 .env
-/node_modules/
-
-# React Router
-/.react-router/
-/build/
+.env.*
+!.env.example
