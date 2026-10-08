@@ -1,0 +1,87 @@
+name: AI Review
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  opencode-review:
+    name: OpenCode Review
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check GitHub API availability
+        id: github-api
+        run: |
+          if curl -fsS --max-time 10 https://api.github.com/ >/dev/null; then
+            echo "reachable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Skipping OpenCode review because api.github.com is not reachable from this runner."
+            echo "reachable=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure Git Identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - uses: anomalyco/opencode/github@latest
+        if: steps.github-api.outputs.reachable == 'true'
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          model: opencode/mimo-v2.6-flash-free
+          agent: plan
+          use_github_token: true
+          prompt: |
+            You are a senior code reviewer for Supatool (Browser Developer Tools Extension, WXT, Manifest V3, React 19, Material UI v9).
+            Perform a thorough, high-signal review of this PR adhering strictly to AGENTS.md (no fluff, no buzzwords).
+            This is a read-only review: do not edit files or run git write commands.
+
+            Scope:
+            - General Correctness & Logic: Catch extension lifecycle bugs, memory leaks in tabs/listeners, unhandled errors, broken edge cases, and regressions first.
+            - Extension-Specific Standards:
+              * Manifest V3 & WXT: Follow WXT entrypoint patterns (background, content scripts, popup).
+              * MAIN World Execution: Visibility and focus emulation hooks must run in MAIN world with proper isolation and cleanup.
+              * Safe Permissions: Ensure minimal required permissions declared in wxt.config.ts.
+              * Type Safety: Strict TypeScript (no `any` without justification).
+              * Clean Code: Zero speculative abstractions or dead boilerplate (strict YAGNI).
+              * Commit Format: Conventional Commits or Jira ticket key `[WB-xxx]`. Note: `[s]` is only for Jira issue titles, NOT for git commits.
+
+            Output Guidelines:
+            - Start with a 1-sentence verdict and severity table.
+            - Focus on actionable issues (🔴 Critical, 🟡 Should Fix) with exact copy-pasteable diffs.
+            - Keep positive feedback (🟢 Good) to at most 1-2 bullet points.
+            - If there are no issues, reply with: "LGTM ✅ - No issues found against AGENTS.md rules."
+
+      - name: Skip OpenCode review notice
+        if: steps.github-api.outputs.reachable != 'true'
+        run: echo "OpenCode review skipped due to unreachable GitHub API endpoint."
+
+  greptile-review:
+    name: Greptile Review
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened' || github.event.action == 'reopened'
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Ping Greptile
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '@greptileai review'
+            });

@@ -1,6 +1,11 @@
 {
   "name": "supatool",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "dev": "pnpm --filter extension dev",
+    "build": "pnpm --filter extension build",
+    "compile": "pnpm --filter extension compile"
+  },
+  "packageManager": "pnpm@9.15.5",
   "devDependencies": {}
 }
