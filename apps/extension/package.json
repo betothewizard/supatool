@@ -1,6 +1,6 @@
 {
-  "name": "wxt-react-starter",
-  "description": "manifest.json description",
+  "name": "extension",
+  "description": "Supatool Browser Developer Tools & Productivity Extension",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,6 +15,10 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.2.0",
+    "@mui/material": "^9.2.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
