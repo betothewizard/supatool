@@ -8,6 +8,9 @@ export default defineConfig({
   manifest: {
     name: "Supatool - Developer Tools",
     description: "Browser Developer Tools & Productivity Extension for fast debugging, tab keep-alive, and site data clearing.",
+    action: {
+      default_title: "Supatool - Developer Tools",
+    },
     permissions: [
       "browsingData",
       "activeTab",
