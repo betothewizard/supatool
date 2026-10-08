@@ -5,10 +5,10 @@
 ## Store Listing
 
 **Extension Name** [REQUIRED]
-Supatool - Developer Tools
+Supatool
 
 **Short Description** [REQUIRED]
-Fast web dev tools: instant site data purge (cookies & cache) and tab focus keep-alive emulation for background testing.
+Fast site data reset & tab focus keep-alive emulation. Stop background throttling without digging through DevTools.
 
 **Detailed Description** [REQUIRED]
 Supatool is a lightweight, high-performance browser extension built specifically for web developers, testers, and power users who need fast site resets and seamless background tab execution.
@@ -29,7 +29,7 @@ Clear toolbar badge indicators confirm when tab keep-alive is active. Optional a
 
 HOW TO USE
 
-1. Open any web page or local development server (e.g. localhost:3000).
+1. Open any web app or local development server (e.g. localhost:3000).
 2. Click the Supatool icon in your browser toolbar.
 3. Use "Clear Cache & Storage" to reset the active origin's state in one click.
 4. Toggle "Active Tab Keep-Alive" or "Always Active on Domain" to prevent the page from sleeping or pausing when switching to other windows.

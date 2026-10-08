@@ -25,7 +25,7 @@ export default function App() {
             <FlashOnIcon color="primary" fontSize="small" />
           </Paper>
           <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1rem' }}>
-            Supatool DevTools
+            Supatool
           </Typography>
         </Stack>
 

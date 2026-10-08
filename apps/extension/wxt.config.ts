@@ -6,10 +6,10 @@ export default defineConfig({
   srcDir: "src",
   modulesDir: "wxt-modules",
   manifest: {
-    name: "Supatool - Developer Tools",
-    description: "Browser Developer Tools & Productivity Extension for fast debugging, tab keep-alive, and site data clearing.",
+    name: "Supatool",
+    description: "Fast site data reset & tab focus keep-alive emulation for web developers.",
     action: {
-      default_title: "Supatool - Developer Tools",
+      default_title: "Supatool",
     },
     permissions: [
       "browsingData",
